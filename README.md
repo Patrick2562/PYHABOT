@@ -20,10 +20,11 @@ Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő 
 1. Repository letöltése: `git clone https://github.com/Patrick2562/PYHABOT.git`
 2. Navigálás a letöltött repositoryba: `cd PYHABOT`
 3. Szükséges modulok telepítése: `pip install -r requirements.txt`
-4. **.env** config fájl kitöltése, bot token megadása.
-5. Indítás a kiválaszott integrációval: `python run.py discord`
-6. Bot meghívása a szerverre/szobába, és jogot adni neki az üzenetek olvasásához/küldéséhez. (Discord esetében az indításkor megjelenő linken keresztül)
-7. Hirdetésfigyelő hozzáadása: **Hogyan használd** szekcióban részletezve
+4. **.env** fájl létrehozása *(**.env.example** másolata)*: `copy .env.example .env`
+5. **.env** config fájl megnyitása és kitöltése, bot token megadása az egyenlőség után lévő 'False'-t lecserélve.
+6. Indítás a kiválaszott integrációval: `python run.py discord`
+7. Bot meghívása a szerverre/szobába, és jogot adni neki az üzenetek olvasásához/küldéséhez. (Discord esetében az indításkor megjelenő linken keresztül)
+8. Hirdetésfigyelő hozzáadása: **Hogyan használd** szekcióban részletezve
 
 # Integrációk
 Jelenleg Discord és Telegram integrációval rendelkezik. A boton keresztül különböző parancsokkal szerkeszthetjük a beállításokat.
