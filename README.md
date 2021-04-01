@@ -33,6 +33,7 @@ Jelenleg Discord és Telegram integrációval rendelkezik. A boton keresztül k�
 Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Például: !add)*
 | Parancs     | Leírás                                                                                                 |
 | :---------- | :----------------------------------------------------------------------------------------------------- |
+| help        | Listázza az elérhető parancsokat.                                                                      |
 | add         | Felvenni lehet vele egy új hirdetésfigyelőt.                                                           |
 | del         | Törölni lehet vele egy létező hirdetésfigyelőt.                                                        |
 | notifyon    | Belehet állítani vele, hogy hová küldje az értesítéseket.                                              |
@@ -40,8 +41,8 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Péld
 | rescan      | Elfelejti az eddig átvizsgált hirdetéseket, ismételten átnézi az összeset és elküldi az értesítéseket. |
 | seturl      | Módosítani lehet egy hirdetésfigyelő URL-jét.                                                          |
 | setprefix   | Módosítani lehet vele a parancs prefixet.                                                              |
-| getraw      | Elküldi a scrapelt hirdetések adatait json formátumban.                                                |
 | setinterval | Belehet vele állítani hány másodpercenként ellenőrizzen.                                               |
+| getraw      | Elküldi a scrapelt hirdetések adatait json formátumban.                                                |
 
 # Notification típusok
 | Típus   | Leírás                                                           |

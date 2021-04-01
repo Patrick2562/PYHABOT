@@ -30,11 +30,11 @@ class Integration(IntegrationsParent.Parent):
 
     async def sendMessage(self, ctx, text):
         for chunk in self.splitToChunks(text, size=4000):
-            await ctx.chat.send(chunk)
+            await ctx.chat.send(chunk, parse_mode="MarkdownV2")
 
     async def reply(self, ctx, text):
         for chunk in self.splitToChunks(text, size=4000):
-            await ctx.reply(chunk)
+            await ctx.reply(chunk, parse_mode="MarkdownV2")
 
 
 def init(token):

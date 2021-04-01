@@ -1,30 +1,21 @@
-import json
-import classes.scraper as scraper
+import classes.commandhandler as commands
+import classes.databank as databank
+
 
 class Pyhabot():
     def __init__(self):
-        pass
+        data = databank.load("config.json", True)
+        self.prefix   = data.get("commands_prefix", "!")
+        self.interval = data.get("refresh_interval", 60)
 
-    def isCommand(self, cmd):
-        return cmd and len(cmd) > 1 and cmd[0] == '!'
-
-    async def commandHandler(self, **kwargs):
-        integration = kwargs.get("integration")
-        ctx         = kwargs.get("ctx")
-        text        = kwargs.get("text")
-        
-        if not self.isCommand(text):
-            return False
-
-        args = text.strip().split()
-        cmd  = args.pop(0)[1:]
-
-        if cmd == "raw":
-            data = scraper.scrape(args[0])
-            await integration.sendMessage(ctx, json.dumps(data))
+    def saveSettings(self):
+        return databank.save("config.json", {
+            "commands_prefix":  self.prefix,
+            "refresh_interval": self.interval
+        }, True)
 
     async def onMessage(self, **kwargs):
-        await self.commandHandler(**kwargs)
+        await commands.handler(kwargs)
 
 
 bot = Pyhabot()
