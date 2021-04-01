@@ -33,15 +33,15 @@ def scrape(url):
 
                         if len(info_divs) >= 3 and len(misc_divs) >= 2:
                             ads.append({
-                                "name":        title.h1.a.text.strip(),
-                                "link":        title.h1.a["href"],
-                                "price":       info_divs[0].text.strip(),
-                                "city":        info_divs[1].text.strip(),
-                                "date":        info_divs[2].text.strip(),
-                                "seller_name": misc_divs[0].a.text.strip(),
-                                "seller_url":  base_url + misc_divs[0].a["href"],
-                                "rates":       misc_divs[1].span.text.strip(),
-                                "image":       base_url + ad.a.img["src"]
+                                "name":         title.h1.a.text.strip(),
+                                "link":         title.h1.a["href"],
+                                "price":        info_divs[0].text.strip(),
+                                "city":         info_divs[1].text.strip(),
+                                "date":         info_divs[2].text.strip(),
+                                "seller_name":  misc_divs[0].a.text.strip(),
+                                "seller_url":   base_url + misc_divs[0].a["href"],
+                                "seller_rates": misc_divs[1].span.text.strip(),
+                                "image":        base_url + ad.a.img["src"]
                             })
 
             return {
