@@ -1,0 +1,2 @@
+# PYHABOT
+ Hardverapró hirdetésfigyelő
