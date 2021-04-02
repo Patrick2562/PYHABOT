@@ -47,7 +47,7 @@ class Pyhabot():
         self.scrapeTask = loop.create_task(self.scrapeAds())
 
     async def scrapeAds(self):
-        print("Scraping...")
+        news = 0
         for id_ in self.viewers["list"]:
             viewer = self.viewers["list"][id_]
 
@@ -60,9 +60,11 @@ class Pyhabot():
                     lastseen = viewer["lastseen"] if "lastseen" in viewer else 0
                     
                     if adid > lastseen:
+                        news += 1
                         self.viewers["list"][id_]["lastseen"] = adid
                         await self.sendNotification(viewer, ad)
-                    
+
+        print(f"Scraping . . .  {news} new ads")
         self.saveViewers()
 
         await asyncio.sleep(self.interval)
@@ -70,13 +72,24 @@ class Pyhabot():
 
     async def sendNotification(self, viewer, ad):
         notifyon = viewer["notifyon"]
+        
+        params   = commands.getURLParams(viewer["url"])
+        stext    = params["stext"][0] if "stext" in params else "?"
+        minprice = params["minprice"][0] if "minprice" in params else "0"
+        maxprice = params["maxprice"][0] if "maxprice" in params else "∞"
+
+        str_  = f"**{stext}**\n"
+        str_ += f"{minprice} - {maxprice} Ft\n\n"
+        # str_ += f"[{ad['name']}]({ad['link']})\n"
+        str_ += f"{ad['link']}\n"
+        # str_ += f"**- {ad['price']} Ft** ({ad['city']}) ({ad['date']}) ([{ad['seller_name']}]({ad['seller_url']}) ({ad['seller_rates']}))"
+        str_ += f"**- {ad['price']} Ft** ({ad['city']}) ({ad['date']}) ({ad['seller_name']} {ad['seller_rates']})"
 
         if "integration" in notifyon:
-            if self.integration.type_ != notifyon["integration"]:
-                print("TODO : REMOVE")
-                return False
+            # if self.integration.type_ != notifyon["integration"]:
+                # TODO : Not active intergration, can't send notification
 
-            return await self.integration.sendMessageToChannelByID(notifyon["id"], ad["name"])
+            return await self.integration.sendMessageToChannelByID(notifyon["id"], str_)
 
         elif "webhook" in notifyon:
             print("FETCH")

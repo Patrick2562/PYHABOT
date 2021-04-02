@@ -32,11 +32,11 @@ class Integration(IntegrationsParent.Parent):
         return self.client.run( self.client.token )
 
     async def sendMessage(self, ctx, text):
-        for chunk in self.splitToChunks(text, size=2000):
+        for chunk in self.splitToChunks(text, 2000):
             await ctx.channel.send(chunk)
 
     async def reply(self, ctx, text):
-        for chunk in self.splitToChunks(text, size=2000):
+        for chunk in self.splitToChunks(text, 2000):
             await ctx.reply(chunk, mention_author=True)
 
     def getMessageChannelID(self, ctx):
@@ -46,7 +46,7 @@ class Integration(IntegrationsParent.Parent):
         channel = self.client.get_channel(id_)
         
         if channel:
-            for chunk in self.splitToChunks(text, size=2000):
+            for chunk in self.splitToChunks(text, 2000):
                 await channel.send(chunk)
 
 def init(token):

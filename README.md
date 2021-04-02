@@ -35,11 +35,12 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Péld
 | Parancs     | Leírás                                                                                                 |
 | :---------- | :----------------------------------------------------------------------------------------------------- |
 | help        | Listázza az elérhető parancsokat.                                                                      |
+| settings    | Megmutatja a bot beállításait.                                                                         |
 | add         | Felvenni lehet vele egy új hirdetésfigyelőt.                                                           |
 | del         | Törölni lehet vele egy létező hirdetésfigyelőt.                                                        |
-| notifyon    | Belehet állítani vele, hogy hová küldje az értesítéseket.                                              |
-| list        | Listázza az eddig felvett hirdetésfigyelőket.                                                          |
+| list        | Listázza a felvett hirdetésfigyelőket.                                                                 |
 | info        | Meglehet vele nézni egy hirdetésfigyelő adatait.                                                       |
+| notifyon    | Módosítani lehet vele, hogy hová küldje az értesítéseket egy adott hirdetésfigyelő.                    |
 | rescrape    | Elfelejti az eddig átvizsgált hirdetéseket, ismételten átnézi az összeset és elküldi az értesítéseket. |
 | seturl      | Módosítani lehet egy hirdetésfigyelő URL-jét.                                                          |
 | setprefix   | Módosítani lehet vele a parancs prefixet.                                                              |
@@ -49,7 +50,7 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Péld
 # Notification típusok
 | Típus   | Leírás                                                           |
 | :------ | :--------------------------------------------------------------- |
-| here    | Ide, arra a chatra ahol a parancs be lett írva.                  |
+| here    | Ide, arra a chatre ahol a parancs be lett írva.                  |
 | private | Privát üzenetben, azon a platformon ahol a parancs be lett írva. |
 | webhook | A támogatott integrációkon lévő platform webhookja.              |
 
