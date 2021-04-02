@@ -9,6 +9,7 @@ class Client():
     integration = False
     
     def __init__(self, token, integration):
+        self.token       = token
         self.integration = integration
         self.client      = commands.Bot(token)
 
@@ -21,11 +22,14 @@ class Client():
 
 
 class Integration(IntegrationsParent.Parent):
-    client  = False
+    client = False
+    type_  = "Telegram"
 
     def __init__(self, token):
         super().__init__("Telegram")
         self.client = Client(token, self)
+
+    def run(self):
         self.client.run()
 
     async def sendMessage(self, ctx, text):
@@ -36,6 +40,8 @@ class Integration(IntegrationsParent.Parent):
         for chunk in self.splitToChunks(text, size=4000):
             await ctx.reply(chunk, parse_mode="MarkdownV2")
 
+    def getMessageChannelID(self, ctx):
+        return ctx.chat.id
 
 def init(token):
-    Integration(token)
+    pyhabot.bot.setIntegration( Integration(token) )

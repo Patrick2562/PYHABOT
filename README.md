@@ -12,7 +12,8 @@ Rendelkezik több integrációval is, amelyek segítségével parancsokon keresz
 Miután meghívtad a botot az általad használt platformon lévő szerverre/szobába, a lent listázott parancsokkal kezelheted.
 Egy új hirdetésfigyelő hozzáadásához elsőnek fel kell menni a [Hardverapróra](https://hardverapro.hu) és rákeresni a termékre amit figyelni szeretnél. Érdemes a részletes keresést használni, beállítani a kategóriát, minimum és maximum árat.
 Ha ez megvan akkor a kattints a KERESÉS gombra és a találatok oldalon másold ki az URL-t, ezután a botnak kell elküldeni a következő parancsot: `!add <Kimásolt URL>`
-Ilyenkor felkerül a listára és láthatjuk a hirdetésfigyelő ID-jét (erre szükség lesz a többi parancs használatánál), de még be kell állítani hova szeretnéd kapni az értesítéseket mielőtt működésbe lépne. Ehhez használd a `!notifyon <Hirdetésfigyelő ID> <Notification típus>` parancsot.
+Ilyenkor felkerül a listára és láthatjuk a hirdetésfigyelő ID-jét (erre szükség lesz a többi parancs használatánál).
+Alapértelmezetten az értesítéseket abba a szobába fogja küldeni, ahol a parancs be lett írva, de meg lehet változtatni, ehhez használd a `!notifyon <Hirdetésfigyelő ID> <Notification típus>` parancsot.
 Ha mindent megfelelően csináltál, akkor a bot innentől kezdve egy új hirdetés megjelenésekor értesítést küld.
 Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő hozzáadása előtt is léteztek), akkor használd a `!rescan <Hirdetésfigyelő ID>` parancsot.
 
@@ -38,6 +39,7 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Péld
 | del         | Törölni lehet vele egy létező hirdetésfigyelőt.                                                        |
 | notifyon    | Belehet állítani vele, hogy hová küldje az értesítéseket.                                              |
 | list        | Listázza az eddig felvett hirdetésfigyelőket.                                                          |
+| info        | Meglehet vele nézni egy hirdetésfigyelő adatait.                                                       |
 | rescan      | Elfelejti az eddig átvizsgált hirdetéseket, ismételten átnézi az összeset és elküldi az értesítéseket. |
 | seturl      | Módosítani lehet egy hirdetésfigyelő URL-jét.                                                          |
 | setprefix   | Módosítani lehet vele a parancs prefixet.                                                              |
@@ -54,6 +56,7 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Péld
 # Scraper RAW JSON paraméterek
 | Paraméter    | Leírás                   |
 | :----------- | :----------------------- |
+| id           | Hirdetés ID              |
 | name         | Termék neve              |
 | link         | Link a hirdetés oldalára |
 | price        | Termék ára               |

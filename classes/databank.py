@@ -17,7 +17,7 @@ def save(file, data, tojson=False):
             os.makedirs("./databank")
 
         f = open(f"./databank/{file}", "w+")
-        f.write(json.dumps(data) if tojson else data)
+        f.write(json.dumps(data, indent=4, sort_keys=True) if tojson else data)
         f.close()
         return True
 

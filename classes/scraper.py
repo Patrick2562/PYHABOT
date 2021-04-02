@@ -16,10 +16,10 @@ def scrape(url):
         uad_list = html.find("div", class_="uad-list")
 
         if uad_list.ul and uad_list.ul.li:
-            count = re.findall("(\d+)", uad_list.ul.li.h3.text)[0]
+            total = int(re.findall("(\d+)", uad_list.ul.li.h3.text)[0])
             ads   = []
 
-            if int(count) and int(count) > 0:
+            if total > 0:
                 medias = html.findAll(class_="media")
                 
                 for ad in medias:
@@ -33,6 +33,7 @@ def scrape(url):
 
                         if len(info_divs) >= 3 and len(misc_divs) >= 2:
                             ads.append({
+                                "id":           ad["data-uadid"],
                                 "name":         title.h1.a.text.strip(),
                                 "link":         title.h1.a["href"],
                                 "price":        info_divs[0].text.strip(),
@@ -45,7 +46,7 @@ def scrape(url):
                             })
 
             return {
-                "count": count,
+                "total": total,
                 "ads":   ads
             }
 
