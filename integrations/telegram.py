@@ -33,15 +33,26 @@ class Integration(IntegrationsParent.Parent):
         self.client.run()
 
     async def sendMessage(self, ctx, text):
+        text = text.replace("-", "\-").replace(".", "\.")
         for chunk in self.splitToChunks(text, size=4000):
             await ctx.chat.send(chunk, parse_mode="MarkdownV2")
 
     async def reply(self, ctx, text):
+        text = text.replace("-", "\-").replace(".", "\.")
         for chunk in self.splitToChunks(text, size=4000):
             await ctx.reply(chunk, parse_mode="MarkdownV2")
 
     def getMessageChannelID(self, ctx):
         return ctx.chat.id
+
+    async def sendMessageToChannelByID(self, id_, text):
+        chat = commands.Bot.get_chat(id_)
+        print(chat)
+
+        if chat:
+            text = text.replace("-", "\-").replace(".", "\.")
+            for chunk in self.splitToChunks(text, size=2000):
+                await chat.send(chunk, parse_mode="MarkdownV2")
 
 def init(token):
     pyhabot.bot.setIntegration( Integration(token) )

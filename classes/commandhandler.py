@@ -56,6 +56,7 @@ async def handler(kwargs):
         interval = int(args[0])
 
         pyhabot.bot.interval = interval
+        pyhabot.bot.startScrapeTask()
         pyhabot.bot.saveSettings()
         await integration.sendMessage(ctx, f"Refresh interval módosítva: `{interval}`")
 
@@ -99,5 +100,13 @@ async def handler(kwargs):
         notifyon = pyhabot.bot.setViewerNotifyon(id_, type_, kwargs)
         if notifyon:
             await integration.sendMessage(ctx, f"Értesítés típusa beálltva! - `ID: {id_}` - " + str(notifyon))
+
+    elif cmd == "rescrape":
+        for id_ in pyhabot.bot.viewers["list"]:
+            pyhabot.bot.viewers["list"][id_]["lastseen"] = 0
+
+        pyhabot.bot.startScrapeTask()
+        await integration.sendMessage(ctx, f"Minden hirdetés újbóli átvizsgálása...")
+
 
     return False

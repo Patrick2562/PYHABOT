@@ -42,8 +42,12 @@ class Integration(IntegrationsParent.Parent):
     def getMessageChannelID(self, ctx):
         return ctx.channel.id
 
-    def sendMessageToChannelByID(self, id_, text):
-        print(self.client.get_channel(id_))
+    async def sendMessageToChannelByID(self, id_, text):
+        channel = self.client.get_channel(id_)
+        
+        if channel:
+            for chunk in self.splitToChunks(text, size=2000):
+                await channel.send(chunk)
 
 def init(token):
     pyhabot.bot.setIntegration( Integration(token) )

@@ -1,6 +1,6 @@
 import json
 import time
-import threading
+import asyncio
 import classes.commandhandler as commands
 import classes.databank as databank
 import classes.scraper as scraper
@@ -8,6 +8,7 @@ import classes.scraper as scraper
 
 class Pyhabot():
     integration = False
+    scrapeTask  = False
 
     def __init__(self):
         config = databank.load("config.json", True)
@@ -23,9 +24,7 @@ class Pyhabot():
     def setIntegration(self, integration):
         self.integration = integration
 
-        self.timerThread = threading.Thread(target=self.scrapeAds, daemon=True)
-        self.timerThread.start()
-
+        self.startScrapeTask()
         integration.run()
 
     async def onMessage(self, **kwargs):
@@ -40,7 +39,14 @@ class Pyhabot():
     def saveViewers(self):
         return databank.save("viewers.json", self.viewers, True)
 
-    def scrapeAds(self):
+    def startScrapeTask(self):
+        if self.scrapeTask:
+            self.scrapeTask.cancel()
+
+        loop = asyncio.get_event_loop()
+        self.scrapeTask = loop.create_task(self.scrapeAds())
+
+    async def scrapeAds(self):
         print("Scraping...")
         for id_ in self.viewers["list"]:
             viewer = self.viewers["list"][id_]
@@ -55,16 +61,27 @@ class Pyhabot():
                     
                     if adid > lastseen:
                         self.viewers["list"][id_]["lastseen"] = adid
-                        self.sendNotification(viewer, ad)
+                        await self.sendNotification(viewer, ad)
                     
         self.saveViewers()
 
-        time.sleep(self.interval)
-        self.timerThread = threading.Thread(target=self.scrapeAds, daemon=True)
-        self.timerThread.start()
+        await asyncio.sleep(self.interval)
+        await self.scrapeAds()
 
-    def sendNotification(self, viewer, ad):
-        print(viewer["notifyon"])
+    async def sendNotification(self, viewer, ad):
+        notifyon = viewer["notifyon"]
+
+        if "integration" in notifyon:
+            if self.integration.type_ != notifyon["integration"]:
+                print("TODO : REMOVE")
+                return False
+
+            return await self.integration.sendMessageToChannelByID(notifyon["id"], ad["name"])
+
+        elif "webhook" in notifyon:
+            print("FETCH")
+
+        return False
 
     def addViewer(self, url):
         self.viewers["AI"] += 1
@@ -93,11 +110,11 @@ class Pyhabot():
         notifyon    = False
 
         if type_ == "here":
-            notifyon = { integration: integration.type_, id_: integration.getMessageChannelID(ctx) }
+            notifyon = { "integration": integration.type_, "id": integration.getMessageChannelID(ctx) }
         elif type_ == "webhook":
             args = text.strip().split()
             url  = args[0]
-            notifyon = { webhook: url }
+            notifyon = { "webhook": url }
         
         self.viewers["list"][str(id_)]["notifyon"] = notifyon
         self.saveViewers()

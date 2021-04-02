@@ -40,7 +40,7 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Péld
 | notifyon    | Belehet állítani vele, hogy hová küldje az értesítéseket.                                              |
 | list        | Listázza az eddig felvett hirdetésfigyelőket.                                                          |
 | info        | Meglehet vele nézni egy hirdetésfigyelő adatait.                                                       |
-| rescan      | Elfelejti az eddig átvizsgált hirdetéseket, ismételten átnézi az összeset és elküldi az értesítéseket. |
+| rescrape    | Elfelejti az eddig átvizsgált hirdetéseket, ismételten átnézi az összeset és elküldi az értesítéseket. |
 | seturl      | Módosítani lehet egy hirdetésfigyelő URL-jét.                                                          |
 | setprefix   | Módosítani lehet vele a parancs prefixet.                                                              |
 | setinterval | Belehet vele állítani hány másodpercenként ellenőrizzen.                                               |
