@@ -1,6 +1,8 @@
 import json
 import time
 import asyncio
+import urllib
+import requests
 import classes.commandhandler as commands
 import classes.databank as databank
 import classes.scraper as scraper
@@ -81,18 +83,21 @@ class Pyhabot():
         str_  = f"**{stext}**\n"
         str_ += f"{minprice} - {maxprice} Ft\n\n"
         # str_ += f"[{ad['name']}]({ad['link']})\n"
-        str_ += f"{ad['link']}\n"
+        str_ += f"**{ad['name']}**\n{ad['link']}\n"
         # str_ += f"**- {ad['price']} Ft** ({ad['city']}) ({ad['date']}) ([{ad['seller_name']}]({ad['seller_url']}) ({ad['seller_rates']}))"
         str_ += f"**- {ad['price']} Ft** ({ad['city']}) ({ad['date']}) ({ad['seller_name']} {ad['seller_rates']})"
 
-        if "integration" in notifyon:
-            # if self.integration.type_ != notifyon["integration"]:
-                # TODO : Not active intergration, can't send notification
+        if notifyon["on"] == "integration":
+            if self.integration.type_ != notifyon["integration"]:
+                print(f"Tried to send notification (id: {notifyon['id']}) to '{notifyon['integration']}', but failed because bot started with {self.integration.type_} integration.'")
 
             return await self.integration.sendMessageToChannelByID(notifyon["id"], str_)
 
-        elif "webhook" in notifyon:
-            print("FETCH")
+        elif notifyon["on"] == "webhook":
+            # parsed_url = urllib.parse.urlparse(notifyon["url"])
+            
+            # if parsed_url.netloc == "discord.com":
+            requests.post(notifyon["url"], [("username", "pyhabot"), ("avatar_url", "https://i.imgur.com/kr1coKh.png"), ("content", str_)])
 
         return False
 
@@ -123,11 +128,12 @@ class Pyhabot():
         notifyon    = False
 
         if type_ == "here":
-            notifyon = { "integration": integration.type_, "id": integration.getMessageChannelID(ctx) }
+            notifyon = { "on": "integration", "integration": integration.type_, "id": integration.getMessageChannelID(ctx) }
+        
         elif type_ == "webhook":
             args = text.strip().split()
-            url  = args[0]
-            notifyon = { "webhook": url }
+            url  = args[3]
+            notifyon = { "on": "webhook", "url": url }
         
         self.viewers["list"][str(id_)]["notifyon"] = notifyon
         self.saveViewers()

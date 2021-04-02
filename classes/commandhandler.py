@@ -139,8 +139,7 @@ async def handler(kwargs):
         for id_ in pyhabot.bot.viewers["list"]:
             pyhabot.bot.viewers["list"][id_]["lastseen"] = 0
 
-        pyhabot.bot.startScrapeTask()
         await integration.sendMessage(ctx, f"Minden hirdetés újbóli átvizsgálása...")
-
+        pyhabot.bot.startScrapeTask()
 
     return False
