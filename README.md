@@ -45,7 +45,7 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Péld
 | seturl      | Módosítani lehet egy hirdetésfigyelő URL-jét.                                                          |
 | setprefix   | Módosítani lehet vele a parancs prefixet.                                                              |
 | setinterval | Belehet vele állítani hány másodpercenként ellenőrizzen.                                               |
-| getraw      | Elküldi a scrapelt hirdetések adatait json formátumban.                                                |
+| getraw      | Feltölti a scrapelt hirdetések adatait Pastebin-rem json formátumban és elküldi a linket.              |
 
 # Notification típusok
 | Típus   | Leírás                                                                                                            |

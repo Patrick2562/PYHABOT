@@ -3,6 +3,7 @@ config = dotenv_values(".env")
 
 import json
 import urllib
+import requests
 import classes.pyhabot as pyhabot
 import classes.scraper as scraper
 
@@ -71,8 +72,17 @@ async def handler(kwargs):
         elif cmd == "getraw":
             argsCheck(args, ["str"], f"{pyhabot.bot.prefix}{cmd} <url>")
 
+            if not "PASTEBIN_API_KEY" in config or not config["PASTEBIN_API_KEY"] or config["PASTEBIN_API_KEY"] == "False":
+                return await integration.sendMessage(ctx, "Nem használható, mert nincs megadva 'PASTEBIN_API_KEY' a **.env** config fájlban!")
+
             data = scraper.scrape(args[0])
-            await integration.sendMessage(ctx, json.dumps(data))
+            response = requests.post("https://pastebin.com/api/api_post.php", [
+                ("api_dev_key", config["PASTEBIN_API_KEY"]),
+                ("api_paste_format", "json"),
+                ("api_option", "paste"),
+                ("api_paste_code", json.dumps(data, indent=4, sort_keys=True))
+            ])
+            await integration.sendMessage(ctx, "Link: " + response.text)
             return True
 
         elif cmd == "setprefix":
