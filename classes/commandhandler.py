@@ -112,6 +112,7 @@ async def handler(kwargs):
             id_ = pyhabot.bot.addViewer(url)
             if id_:
                 pyhabot.bot.setViewerNotifyon(id_, "here", kwargs)
+                pyhabot.bot.startScrapeTask()
                 await integration.sendMessage(ctx, f"Sikeresen hozzáadva! - `ID: {id_}`")
 
         elif cmd == "del":
@@ -173,10 +174,13 @@ async def handler(kwargs):
                 await integration.sendMessage(ctx, f"Értesítés típusa beálltva! - `ID: {id_}` - " + (notifyon["integration"] if "integration" in notifyon else "webhook"))
 
         elif cmd == "rescrape":
-            for id_ in pyhabot.bot.viewers["list"]:
-                pyhabot.bot.viewers["list"][id_]["lastseen"] = 0
+            id_ = args[0] if len(args) > 0 else False
 
-            await integration.sendMessage(ctx, f"Minden hirdetés újbóli átvizsgálása...")
+            for id__ in pyhabot.bot.viewers["list"]:
+                if not id_ or int(id__) == int(id_):
+                    pyhabot.bot.viewers["list"][id__]["lastseen"] = 0
+
+            await integration.sendMessage(ctx, f"Hirdetések újbóli átvizsgálása...")
             pyhabot.bot.startScrapeTask()
 
     except Exception as err:

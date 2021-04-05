@@ -51,7 +51,8 @@ class Pyhabot():
     async def scrapeAds(self):
         news = 0
         for id_ in self.viewers["list"]:
-            viewer = self.viewers["list"][id_]
+            viewer   = self.viewers["list"][id_]
+            lastseen = viewer["lastseen"] if "lastseen" in viewer else False
 
             if "notifyon" in viewer:
                 data = scraper.scrape(viewer["url"])
@@ -59,12 +60,12 @@ class Pyhabot():
                 for ad in data["ads"]:
                     adid = int(ad["id"])
 
-                    lastseen = viewer["lastseen"] if "lastseen" in viewer else 0
-                    
-                    if adid > lastseen:
-                        news += 1
+                    if lastseen == False or adid > lastseen:
                         self.viewers["list"][id_]["lastseen"] = adid
-                        await self.sendNotification(viewer, ad)
+
+                        if type(lastseen).__name__ == "int":
+                            news += 1
+                            await self.sendNotification(viewer, ad)
 
         print(f"Scraping . . .  {news} new ads")
         self.saveViewers()
@@ -105,7 +106,7 @@ class Pyhabot():
         self.viewers["AI"] += 1
         self.viewers["list"][ str(self.viewers["AI"]) ] = {
             "url":      url,
-            "lastseen": 0,
+            "lastseen": False,
             "notifyon": False
         }
         self.saveViewers()
