@@ -49,6 +49,7 @@ class Pyhabot():
         self.scrapeTask = loop.create_task(self.scrapeAds())
 
     async def scrapeAds(self):
+        await asyncio.sleep(2)
         news = 0
         for id_ in self.viewers["list"]:
             viewer   = self.viewers["list"][id_]
