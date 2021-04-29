@@ -21,6 +21,7 @@ class Client():
             await pyhabot.bot.onMessage(integration=self.integration, ctx=message, text=message.content)
 
     def run(self):
+        pyhabot.bot.startScrapeTask()
         self.client.run()
 
 

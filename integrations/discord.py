@@ -26,6 +26,8 @@ class Integration(IntegrationsParent.Parent):
         
         @self.client.event
         async def on_ready():
+            print(f"Invite link: https://discord.com/oauth2/authorize?client_id={self.client.user.id}&scope=bot&permissions=8")
+            pyhabot.bot.startScrapeTask()
             await self.client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="HardverApró"))
             
     def run(self):

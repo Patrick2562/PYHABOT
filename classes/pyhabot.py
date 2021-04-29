@@ -25,8 +25,6 @@ class Pyhabot():
 
     def setIntegration(self, integration):
         self.integration = integration
-
-        self.startScrapeTask()
         integration.run()
 
     async def onMessage(self, **kwargs):
@@ -49,7 +47,7 @@ class Pyhabot():
         self.scrapeTask = loop.create_task(self.scrapeAds())
 
     async def scrapeAds(self):
-        await asyncio.sleep(2)
+        # await asyncio.sleep(2)
         news = 0
         for id_ in self.viewers["list"]:
             viewer   = self.viewers["list"][id_]
@@ -62,7 +60,8 @@ class Pyhabot():
                     adid = int(ad["id"])
 
                     if lastseen == False or adid > lastseen:
-                        self.viewers["list"][id_]["lastseen"] = adid
+                        if not self.viewers["list"][id_]["lastseen"] or adid > self.viewers["list"][id_]["lastseen"]:
+                            self.viewers["list"][id_]["lastseen"] = adid
 
                         if type(lastseen).__name__ == "int":
                             news += 1
