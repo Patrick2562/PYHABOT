@@ -183,6 +183,9 @@ async def handler(kwargs):
             await integration.sendMessage(ctx, f"Hirdetések újbóli átvizsgálása...")
             pyhabot.bot.startScrapeTask()
 
+    except KeyError as err:
+        await integration.sendMessage(ctx, "Nem található... " + str(err))
+
     except Exception as err:
         await integration.sendMessage(ctx, str(err))
 
