@@ -18,8 +18,9 @@ Ha mindent megfelelően csináltál, akkor a bot innentől kezdve egy új hirdet
 Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő hozzáadása előtt is léteztek), akkor használd a `!rescrape <Hirdetésfigyelő ID>` parancsot.
 
 # Telepítés (Windows)
-1. Repository letöltése: `git clone https://github.com/Patrick2562/PYHABOT.git`
-2. Navigálás a letöltött repositoryba: `cd PYHABOT`
+0. Python telepítése. [(letöltés)](https://www.python.org/downloads/)
+1. Repository letöltése és kicsomagolása. [(letöltés)](https://github.com/Patrick2562/PYHABOT/archive/refs/heads/master.zip)
+2. Parancssor megnyitása és navigálás a letöltött repositoryba: `cd PYHABOT`
 3. Szükséges modulok telepítése: `pip install -r requirements.txt`
 4. **.env** fájl létrehozása *(**.env.example** másolata)*: `copy .env.example .env`
 5. **.env** config fájl megnyitása és kitöltése, bot token megadása az egyenlőség után lévő 'False'-t lecserélve.
@@ -30,7 +31,7 @@ Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő 
 # Integrációk
 Jelenleg Discord és Telegram integrációval rendelkezik. A boton keresztül különböző parancsokkal szerkeszthetjük a beállításokat.
 
-# Parancsok.
+# Parancsok
 Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Például: !add)*
 | Parancs     | Leírás                                                                                                                                                                                   |
 | :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -66,24 +67,3 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Péld
 | seller_url   | Link az eladó profiljára |
 | seller_rates | Eladő értékelései        |
 | image        | Kép link a termékről     |
-
-# Hardverapró search paraméterek
-| Paraméter    | Leírás                         |
-| :----------- | :----------------------------- |
-| stext        | Kulcsszavak                    |
-| county       |
-| stcid        | Megye  ID                      |
-| settlement   | Település ID                   |
-| stmid        |
-| minprice     | Minimum ár                     |
-| maxprice     | Maximum ár                     |
-| company      |
-| cmpid        | Termék márka ID                |
-| user         |
-| usrid        | Hirdető felhasználó ID         |
-| selling      | Eladásra kinált hirdetés (0,1) |
-| buying       | Venni akaró hirdetés (0,1)     |
-| stext_none   | Kerülendő szavak               |
-| noticed      | Jegelteket ne listázza (0,1)   |
-| search_exac  | Csak pontos egyezések (0,1)    |
-| search_title | Csak a címben keressen  (0,1)  |

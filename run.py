@@ -7,7 +7,7 @@ def main():
     type_ = sys.argv[1].lower() if (sys.argv and len(sys.argv) > 1) else False
 
     if type_ == "discord":
-        if "DISCORD_TOKEN" in config and config["TELEGRAM_TOKEN"] != "False":
+        if "DISCORD_TOKEN" in config and config["DISCORD_TOKEN"] != "False":
             import integrations.discord
             integrations.discord.init(config["DISCORD_TOKEN"])
         else:
