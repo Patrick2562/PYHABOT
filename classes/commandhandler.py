@@ -130,7 +130,7 @@ async def handler(kwargs):
                 viewer = pyhabot.bot.viewers["list"][id_]
                 params = getURLParams(viewer["url"])
 
-                str_ += ('\n' if str_ != '' else '') + f"`ID: {id_}` - " + params["stext"][0]
+                str_ += ('\n' if str_ != '' else '') + f"`ID: {id_}` - " + params.get("stext", ["Nem volt megadva keresés"])[0]
 
             await integration.sendMessage(ctx, str_ if str_ != "" else "Nincs még felvett hirdetésfigyelő!") 
 

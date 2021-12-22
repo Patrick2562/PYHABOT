@@ -84,9 +84,9 @@ class Pyhabot():
         str_  = f"**{stext}**\n"
         str_ += f"{minprice} - {maxprice} Ft\n\n"
         # str_ += f"[{ad['name']}]({ad['link']})\n"
-        str_ += f"**{ad['name']}**\n{ad['link']}\n"
+        str_ += f"[{ad['name']}]({ad['link']})\n"
         # str_ += f"**- {ad['price']} Ft** ({ad['city']}) ({ad['date']}) ([{ad['seller_name']}]({ad['seller_url']}) ({ad['seller_rates']}))"
-        str_ += f"**- {ad['price']} Ft** ({ad['city']}) ({ad['date']}) ({ad['seller_name']} {ad['seller_rates']})"
+        str_ += f"**{ad['price']} Ft** ({ad['city']}) ({ad['date']}) ({ad['seller_name']} {ad['seller_rates']})"
 
         if notifyon["on"] == "integration":
             if self.integration.type_ != notifyon["integration"]:
