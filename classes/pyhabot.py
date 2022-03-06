@@ -56,6 +56,9 @@ class Pyhabot():
             if "notifyon" in viewer:
                 data = scraper.scrape(viewer["url"])
 
+                if not data:
+                    continue
+
                 for ad in data["ads"]:
                     adid = int(ad["id"])
 
