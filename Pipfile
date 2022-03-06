@@ -1,0 +1,30 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+aiohttp = "==3.7.4.post0"
+async-timeout = "==3.0.1"
+asyncio = "==3.4.3"
+attrs = "==20.3.0"
+beautifulsoup4 = "==4.9.3"
+certifi = "==2020.12.5"
+chardet = "==4.0.0"
+"discord.py" = "==1.6.0"
+idna = "==2.10"
+marko = "==1.0.1"
+mistune = "==0.8.4"
+multidict = "==5.1.0"
+python-dotenv = "==0.16.0"
+requests = "==2.25.1"
+soupsieve = "==2.2.1"
+"telegram.py" = "==0.3.1"
+typing-extensions = "==3.7.4.3"
+urllib3 = "==1.26.5"
+yarl = "==1.6.3"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
