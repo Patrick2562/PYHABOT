@@ -44,37 +44,36 @@ class Pyhabot():
             self.scrapeTask.cancel()
 
         loop = asyncio.get_event_loop()
-        self.scrapeTask = loop.create_task(self.scrapeAds())
+        self.scrapeTask = loop.create_task(self.scrapeAdsTask())
 
-    async def scrapeAds(self):
-        # await asyncio.sleep(2)
-        news = 0
-        for id_ in self.viewers["list"]:
-            viewer   = self.viewers["list"][id_]
-            lastseen = viewer["lastseen"] if "lastseen" in viewer else False
+    async def scrapeAdsTask(self):
+        while True:
+            news = 0
+            for id_ in self.viewers["list"]:
+                viewer   = self.viewers["list"][id_]
+                lastseen = viewer["lastseen"] if "lastseen" in viewer else False
 
-            if "notifyon" in viewer:
-                data = scraper.scrape(viewer["url"])
+                if "notifyon" in viewer:
+                    data = scraper.scrape(viewer["url"])
 
-                if not data:
-                    continue
+                    if not data:
+                        continue
 
-                for ad in data["ads"]:
-                    adid = int(ad["id"])
+                    for ad in data["ads"]:
+                        adid = int(ad["id"])
 
-                    if lastseen == False or adid > lastseen:
-                        if not self.viewers["list"][id_]["lastseen"] or adid > self.viewers["list"][id_]["lastseen"]:
-                            self.viewers["list"][id_]["lastseen"] = adid
+                        if lastseen == False or adid > lastseen:
+                            if not self.viewers["list"][id_]["lastseen"] or adid > self.viewers["list"][id_]["lastseen"]:
+                                self.viewers["list"][id_]["lastseen"] = adid
 
-                        if type(lastseen).__name__ == "int":
-                            news += 1
-                            await self.sendNotification(viewer, ad)
+                            if type(lastseen).__name__ == "int":
+                                news += 1
+                                await self.sendNotification(viewer, ad)
 
-        print(f"Scraping . . .  {news} new ads")
-        self.saveViewers()
+            print(f"Scraping . . .  {news} new ads")
+            self.saveViewers()
 
-        await asyncio.sleep(self.interval)
-        await self.scrapeAds()
+            await asyncio.sleep(self.interval)
 
     async def sendNotification(self, viewer, ad):
         notifyon = viewer["notifyon"]
