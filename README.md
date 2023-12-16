@@ -2,13 +2,13 @@
     <img width="50%" height="auto" src="https://i.imgur.com/3A0RadR.png">
 </p>
 
-PYHABOT
-=======
+# PYHABOT
 
-A **PYHABOT** egy *web scraping* alkalmazás Pythonban, amely a [Hardverapróra](https://hardverapro.hu) feltöltött hirdetéseket nézi át és küld értesítéseket egy új megjelenésekor, azokról amelyek megfelelnek az általunk megadott feltételeknek.
+A **PYHABOT** egy _web scraping_ alkalmazás Pythonban, amely a [Hardverapróra](https://hardverapro.hu) feltöltött hirdetéseket nézi át és küld értesítéseket egy új megjelenésekor, azokról amelyek megfelelnek az általunk megadott feltételeknek.
 Rendelkezik több integrációval is, amelyek segítségével parancsokon keresztül hozzáadhatóak és törölhetőek a keresni kívánt termékek.
 
 # Hogyan használd
+
 Miután meghívtad a botot az általad használt platformon lévő szerverre/szobába, a lent listázott parancsokkal kezelheted.
 Egy új hirdetésfigyelő hozzáadásához elsőnek fel kell menni a [Hardverapróra](https://hardverapro.hu) és rákeresni a termékre amit figyelni szeretnél. Érdemes a részletes keresést használni, beállítani a kategóriát, minimum és maximum árat.
 Ha ez megvan akkor a kattints a KERESÉS gombra és a találatok oldalon másold ki az URL-t, ezután a botnak kell elküldeni a következő parancsot: `!add <Kimásolt URL>`
@@ -18,43 +18,56 @@ Ha mindent megfelelően csináltál, akkor a bot innentől kezdve egy új hirdet
 Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő hozzáadása előtt is léteztek), akkor használd a `!rescrape <Hirdetésfigyelő ID>` parancsot.
 
 # Telepítés (Windows)
+
 0. Python telepítése. [(letöltés)](https://www.python.org/downloads/)
 1. Repository letöltése és kicsomagolása. [(letöltés)](https://github.com/Patrick2562/PYHABOT/archive/refs/heads/master.zip)
 2. Parancssor megnyitása és navigálás a letöltött repositoryba: `cd PYHABOT`
 3. Szükséges modulok telepítése: `pip install -r requirements.txt`
-4. **.env** fájl létrehozása *(**.env.example** másolata)*: `copy .env.example .env`
-5. **.env** config fájl megnyitása és kitöltése, bot token megadása az egyenlőség után lévő 'False'-t lecserélve.
+4. **.env** fájl létrehozása _(**.env.example** másolata)_: `copy .env.example .env`
+5. **.env** config fájl megnyitása és kitöltése, bot token megadása az egyenlőség után lévő `False`-t lecserélve
 6. Indítás a kiválaszott integrációval: `python run.py discord`
 7. Bot meghívása a szerverre/szobába, és jogot adni neki az üzenetek olvasásához/küldéséhez. (Discord esetében az indításkor megjelenő linken keresztül)
 8. Hirdetésfigyelő hozzáadása: **Hogyan használd** szekcióban részletezve
 
+# Használat (Docker)
+
+1. **.env** fájl létrehozása _(**.env.example** másolata)_: `copy .env.example .env`
+2. **.env** config fájl megnyitása és kitöltése, integráció megadása (**KÖTELEZŐ**) bot token megadása az egyenlőség után lévő `False`-t lecserélve
+3. Stack elindítása a `docker compose up -f docker-compose.local.yml -d` paranccsal
+4. Bot meghívása a szerverre/szobába, és jogot adni neki az üzenetek olvasásához/küldéséhez. (Discord esetében az indításkor megjelenő linken keresztül)
+5. Hirdetésfigyelő hozzáadása: **Hogyan használd** szekcióban részletezve
+
 # Integrációk
+
 Jelenleg Discord és Telegram integrációval rendelkezik. A boton keresztül különböző parancsokkal szerkeszthetjük a beállításokat.
 
 # Parancsok
-Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` *(Például: !add)*
-| Parancs     | Leírás                                                                                                                                                                                   |
+
+Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` _(Például: !add)_
+| Parancs | Leírás |
 | :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| help        | Listázza az elérhető parancsokat.                                                                                                                                                        |
-| settings    | Megmutatja a bot beállításait.                                                                                                                                                           |
-| add         | Felvenni lehet vele egy új hirdetésfigyelőt.                                                                                                                                             |
-| del         | Törölni lehet vele egy létező hirdetésfigyelőt.                                                                                                                                          |
-| list        | Listázza a felvett hirdetésfigyelőket.                                                                                                                                                   |
-| info        | Meglehet vele nézni egy hirdetésfigyelő adatait.                                                                                                                                         |
-| notifyon    | Módosítani lehet vele, hogy hová küldje az értesítéseket egy adott hirdetésfigyelő.                                                                                                      |
-| rescrape    | Elfelejti az eddig átvizsgált hirdetéseket, ismételten átnézi az összeset és elküldi az értesítéseket. (Ha van megadva Hirdetésfigyelő ID akkor csak azt, egyébként mindegyiket átnézi.) |
-| seturl      | Módosítani lehet egy hirdetésfigyelő URL-jét.                                                                                                                                            |
-| setprefix   | Módosítani lehet vele a parancs prefixet.                                                                                                                                                |
-| setinterval | Belehet vele állítani hány másodpercenként ellenőrizzen.                                                                                                                                 |
-| getraw      | Feltölti a scrapelt hirdetések adatait Pastebin-rem json formátumban és elküldi a linket.                                                                                                |
+| help | Listázza az elérhető parancsokat. |
+| settings | Megmutatja a bot beállításait. |
+| add | Felvenni lehet vele egy új hirdetésfigyelőt. |
+| del | Törölni lehet vele egy létező hirdetésfigyelőt. |
+| list | Listázza a felvett hirdetésfigyelőket. |
+| info | Meglehet vele nézni egy hirdetésfigyelő adatait. |
+| notifyon | Módosítani lehet vele, hogy hová küldje az értesítéseket egy adott hirdetésfigyelő. |
+| rescrape | Elfelejti az eddig átvizsgált hirdetéseket, ismételten átnézi az összeset és elküldi az értesítéseket. (Ha van megadva Hirdetésfigyelő ID akkor csak azt, egyébként mindegyiket átnézi.) |
+| seturl | Módosítani lehet egy hirdetésfigyelő URL-jét. |
+| setprefix | Módosítani lehet vele a parancs prefixet. |
+| setinterval | Belehet vele állítani hány másodpercenként ellenőrizzen. |
+| getraw | Feltölti a scrapelt hirdetések adatait Pastebin-rem json formátumban és elküldi a linket. |
 
 # Notification típusok
+
 | Típus   | Leírás                                                                                                            |
 | :------ | :---------------------------------------------------------------------------------------------------------------- |
 | here    | Ide, arra a chatre ahol a parancs be lett írva.                                                                   |
 | webhook | POST requestet küld a megadott URL-re. DISCORD WEBHOOK-ot támogatja! (Paraméterek: username, avatar_url, content) |
 
 # Scraper RAW JSON paraméterek
+
 | Paraméter    | Leírás                   |
 | :----------- | :----------------------- |
 | id           | Hirdetés ID              |
