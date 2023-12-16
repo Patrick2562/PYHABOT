@@ -5,10 +5,10 @@ WORKDIR /app
 COPY requirements.txt .
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --user -r requirements.txt
 
 COPY classes ./classes
 COPY integrations ./integrations
 COPY run.py .
 
-CMD ["python3", "-u", "/app/run.py", "telegram"]
+CMD ["sh", "-c", "python3 -u /app/run.py ${PYHABOT_INTEGRATION}"]
