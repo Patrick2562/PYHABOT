@@ -1,0 +1,13 @@
+Dockerfile
+.dockerignore
+
+.gitattributes
+.gitignore
+
+.env.example
+LICENSE
+logo.png
+README.md
+
+Pipfile
+Pipfile.lock
