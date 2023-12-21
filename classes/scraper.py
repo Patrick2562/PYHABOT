@@ -1,14 +1,19 @@
 import requests
 import re
+import urllib
 from bs4 import BeautifulSoup
-from urllib.parse import urlparse
+
+
+def getURLParams(url):
+    parsed_url = urllib.parse.urlparse(url)
+    return urllib.parse.parse_qs(parsed_url.query)
 
 def scrape(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
 
-        parsed_url = urlparse(url)
+        parsed_url = urllib.parse.urlparse(url)
         base_url   = parsed_url.scheme +'://'+ parsed_url.netloc
 
         html       = BeautifulSoup(response.text, "html.parser")

@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="50%" height="auto" src="https://i.imgur.com/3A0RadR.png">
+    <img width="50%" height="auto" src="https://github.com/Patrick2562/PYHABOT/blob/master/assets/logo.png">
 </p>
 
 # PYHABOT
@@ -17,7 +17,7 @@ Alapértelmezetten az értesítéseket abba a szobába fogja küldeni, ahol a pa
 Ha mindent megfelelően csináltál, akkor a bot innentől kezdve egy új hirdetés megjelenésekor értesítést küld.
 Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő hozzáadása előtt is léteztek), akkor használd a `!rescrape <Hirdetésfigyelő ID>` parancsot.
 
-# Telepítés (Windows)
+# Használat (Windows)
 
 0. Python telepítése. [(letöltés)](https://www.python.org/downloads/)
 1. Repository letöltése és kicsomagolása. [(letöltés)](https://github.com/Patrick2562/PYHABOT/archive/refs/heads/master.zip)
@@ -25,7 +25,7 @@ Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő 
 3. Szükséges modulok telepítése: `pip install -r requirements.txt`
 4. **.env** fájl létrehozása _(**.env.example** másolata)_: `copy .env.example .env`
 5. **.env** config fájl megnyitása és kitöltése
-6. Indítás `python run.py` paranccsal
+6. Indítás a `python run.py` paranccsal
 7. Bot meghívása a szerverre/szobába, és jogot adni neki az üzenetek olvasásához/küldéséhez. (Discord esetében az indításkor megjelenő linken keresztül)
 8. Hirdetésfigyelő hozzáadása: **Hogyan használd** szekcióban részletezve
 
@@ -34,7 +34,7 @@ Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő 
 0. Feltételezzük, hogy a Docker telepítve van és minimális ismeretekkel rendelkezel.
 1. **.env** fájl létrehozása _(**.env.example** másolata)_: `copy .env.example .env`
 2. **.env** config fájl megnyitása és kitöltése
-3. Indítás `docker compose up -d` paranccsal
+3. Indítás a `docker compose up -d` paranccsal
 4. Bot meghívása a szerverre/szobába, és jogot adni neki az üzenetek olvasásához/küldéséhez. (Discord esetében az indításkor megjelenő linken keresztül)
 5. Hirdetésfigyelő hozzáadása: **Hogyan használd** szekcióban részletezve
 
@@ -61,26 +61,10 @@ Minden parancs elé ki kell tenni a prefixet, ez alapértelmezetten: `!` _(Péld
 | seturl | Módosítani lehet egy hirdetésfigyelő URL-jét. |
 | setprefix | Módosítani lehet vele a parancs prefixet. |
 | setinterval | Belehet vele állítani hány másodpercenként ellenőrizzen. |
-| getraw | Feltölti a scrapelt hirdetések adatait Pastebin-rem json formátumban és elküldi a linket. |
 
 # Notification típusok
 
 | Típus   | Leírás                                                                                                            |
 | :------ | :---------------------------------------------------------------------------------------------------------------- |
-| here    | Ide, arra a chatre ahol a parancs be lett írva.                                                                   |
+| here    | Ide..., abba a szobába ahol a parancs be lett írva.                                                               |
 | webhook | POST requestet küld a megadott URL-re. DISCORD WEBHOOK-ot támogatja! (Paraméterek: username, avatar_url, content) |
-
-# Scraper RAW JSON paraméterek
-
-| Paraméter    | Leírás                   |
-| :----------- | :----------------------- |
-| id           | Hirdetés ID              |
-| name         | Termék neve              |
-| link         | Link a hirdetés oldalára |
-| price        | Termék ára               |
-| city         | Város                    |
-| date         | Közzététel időpont       |
-| seller_name  | Eladó neve               |
-| seller_url   | Link az eladó profiljára |
-| seller_rates | Eladő értékelései        |
-| image        | Kép link a termékről     |

@@ -1,9 +1,6 @@
-import json
-import time
 import asyncio
-import urllib
 import requests
-import classes.commandhandler as commands
+import classes.commandhandler as commandhandler
 import classes.databank as databank
 import classes.scraper as scraper
 
@@ -13,11 +10,11 @@ class Pyhabot():
     scrapeTask  = False
 
     def __init__(self):
-        config = databank.load("config.json", True)
+        config = databank.load("config.json")
         self.prefix   = config.get("commands_prefix", "!")
         self.interval = config.get("refresh_interval", 60)
 
-        viewers = databank.load("viewers.json", True)
+        viewers = databank.load("viewers.json")
         self.viewers = {
             "AI":   viewers.get("AI", 0),
             "list": viewers.get("list", {})
@@ -28,16 +25,16 @@ class Pyhabot():
         integration.run()
 
     async def onMessage(self, **kwargs):
-        await commands.handler(kwargs)
+        await commandhandler.handle(kwargs)
 
     def saveSettings(self):
         return databank.save("config.json", {
             "commands_prefix":  self.prefix,
             "refresh_interval": self.interval
-        }, True)
+        })
 
     def saveViewers(self):
-        return databank.save("viewers.json", self.viewers, True)
+        return databank.save("viewers.json", self.viewers)
 
     def startScrapeTask(self):
         if self.scrapeTask:
@@ -78,29 +75,24 @@ class Pyhabot():
     async def sendNotification(self, viewer, ad):
         notifyon = viewer["notifyon"]
         
-        params   = commands.getURLParams(viewer["url"])
+        params   = scraper.getURLParams(viewer["url"])
         stext    = params["stext"][0] if "stext" in params else "?"
         minprice = params["minprice"][0] if "minprice" in params else "0"
         maxprice = params["maxprice"][0] if "maxprice" in params else "∞"
 
         str_  = f"**{stext}**\n"
         str_ += f"{minprice} - {maxprice} Ft\n\n"
-        # str_ += f"[{ad['name']}]({ad['link']})\n"
         str_ += f"[{ad['name']}]({ad['link']})\n"
-        # str_ += f"**- {ad['price']} Ft** ({ad['city']}) ({ad['date']}) ([{ad['seller_name']}]({ad['seller_url']}) ({ad['seller_rates']}))"
         str_ += f"**{ad['price']} Ft** ({ad['city']}) ({ad['date']}) ({ad['seller_name']} {ad['seller_rates']})"
 
         if notifyon["on"] == "integration":
-            if self.integration.type_ != notifyon["integration"]:
-                print(f"Tried to send notification (id: {notifyon['id']}) to '{notifyon['integration']}', but failed because bot started with {self.integration.type_} integration.'")
+            if self.integration.name != notifyon["integration"]:
+                print(f"Tried to send notification (id: {notifyon['id']}) to '{notifyon['integration']}', but failed because bot started with {self.integration.name} integration.'")
 
             return await self.integration.sendMessageToChannelByID(notifyon["id"], str_)
 
         elif notifyon["on"] == "webhook":
-            # parsed_url = urllib.parse.urlparse(notifyon["url"])
-            
-            # if parsed_url.netloc == "discord.com":
-            requests.post(notifyon["url"], [("username", "pyhabot"), ("avatar_url", "https://i.imgur.com/kr1coKh.png"), ("content", str_)])
+            requests.post(notifyon["url"], [("username", "pyhabot"), ("avatar_url", "https://github.com/Patrick2562/PYHABOT/blob/master/assets/avatar.png"), ("content", str_)])
 
         return False
 
@@ -131,7 +123,7 @@ class Pyhabot():
         notifyon    = False
 
         if type_ == "here":
-            notifyon = { "on": "integration", "integration": integration.type_, "id": integration.getMessageChannelID(ctx) }
+            notifyon = { "on": "integration", "integration": integration.name, "id": integration.getMessageChannelID(ctx) }
         
         elif type_ == "webhook":
             args = text.strip().split()

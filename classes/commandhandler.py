@@ -1,12 +1,7 @@
-from dotenv import dotenv_values
-config = dotenv_values(".env")
-
 import json
-import urllib
 import requests
-import classes.pyhabot as pyhabot
 import classes.scraper as scraper
-
+import classes.pyhabot as pyhabot
 
 def isCommand(text):
     return text and len(text) > 1 and text[0] == pyhabot.bot.prefix
@@ -31,11 +26,7 @@ def argsCheck(args, expected, howtouse):
 
     return True
 
-def getURLParams(url):
-    parsed_url = urllib.parse.urlparse(url)
-    return urllib.parse.parse_qs(parsed_url.query)
-
-async def handler(kwargs):
+async def handle(kwargs):
     integration = kwargs.get("integration")
     ctx         = kwargs.get("ctx")
     text        = kwargs.get("text")
@@ -59,31 +50,14 @@ async def handler(kwargs):
             str_ += f"{pyhabot.bot.prefix}seturl      | Módosítani lehet egy hirdetésfigyelő URL-jét.\n"
             str_ += f"{pyhabot.bot.prefix}setprefix   | Módosítani lehet vele a parancs prefixet.\n"
             str_ += f"{pyhabot.bot.prefix}setinterval | Belehet vele állítani hány másodpercenként ellenőrizzen.\n"
-            str_ += f"{pyhabot.bot.prefix}getraw      | Elküldi a scrapelt hirdetések adatait json formátumban."
 
             await integration.sendMessage(ctx, f"```\n{str_}\n```")
 
         elif cmd == "settings":
-            str_  = f"- Integration: {pyhabot.bot.integration.type_}\n"
+            str_  = f"- Integration: {pyhabot.bot.integration.name}\n"
             str_ += f"- Commands prefix: {pyhabot.bot.prefix}\n"
             str_ += f"- Refresh interval: {pyhabot.bot.interval} sec"
             await integration.sendMessage(ctx, f"```\n{str_}\n```")
-
-        elif cmd == "getraw":
-            argsCheck(args, ["str"], f"{pyhabot.bot.prefix}{cmd} <url>")
-
-            if not "PASTEBIN_API_KEY" in config or not config["PASTEBIN_API_KEY"] or config["PASTEBIN_API_KEY"] == "False":
-                return await integration.sendMessage(ctx, "Nem használható, mert nincs megadva 'PASTEBIN_API_KEY' a **.env** config fájlban!")
-
-            data = scraper.scrape(args[0])
-            response = requests.post("https://pastebin.com/api/api_post.php", [
-                ("api_dev_key", config["PASTEBIN_API_KEY"]),
-                ("api_paste_format", "json"),
-                ("api_option", "paste"),
-                ("api_paste_code", json.dumps(data, indent=4, sort_keys=True))
-            ])
-            await integration.sendMessage(ctx, "Link: " + response.text)
-            return True
 
         elif cmd == "setprefix":
             argsCheck(args, ["str"], f"{pyhabot.bot.prefix}{cmd} <prefix>")
@@ -128,7 +102,7 @@ async def handler(kwargs):
 
             for id_ in pyhabot.bot.viewers["list"]:
                 viewer = pyhabot.bot.viewers["list"][id_]
-                params = getURLParams(viewer["url"])
+                params = scraper.getURLParams(viewer["url"])
 
                 str_ += ('\n' if str_ != '' else '') + f"`ID: {id_}` - " + params.get("stext", ["Nem volt megadva keresés"])[0]
 
@@ -140,7 +114,7 @@ async def handler(kwargs):
             id_ = args[0]
 
             viewer = pyhabot.bot.viewers["list"][id_]
-            params = getURLParams(viewer["url"])
+            params = scraper.getURLParams(viewer["url"])
 
             stext    = params["stext"][0] if "stext" in params else "?"
             minprice = params["minprice"][0] if "minprice" in params else "0"
@@ -160,7 +134,7 @@ async def handler(kwargs):
             url = args[1]
 
             if pyhabot.bot.setViewerURL(id_, url):
-                params = getURLParams(url)
+                params = scraper.getURLParams(url)
                 await integration.sendMessage(ctx, f"URL módosítva! - `ID: {id_}` - " + params["stext"][0])
 
         elif cmd == "notifyon":

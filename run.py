@@ -1,5 +1,5 @@
-from dotenv import dotenv_values
-config = dotenv_values(".env")
+import dotenv
+config = dotenv.dotenv_values(".env")
 
 
 def main():
@@ -8,12 +8,12 @@ def main():
         return
 
     if config["INTEGRATION"] == "discord":
-        import integrations.discord
-        integrations.discord.init(config["TOKEN"])
+        import classes.integrations.discord as DiscordIntegration
+        DiscordIntegration.init(config["TOKEN"])
         
     elif config["INTEGRATION"] == "telegram":
-        import integrations.telegram
-        integrations.telegram.init(config["TOKEN"])
+        import classes.integrations.telegram as TelegramIntegration
+        TelegramIntegration.init(config["TOKEN"])
 
     else:
         print("Expected valid Integration-type at command line argument 1, got " + str(config["INTEGRATION"]))
