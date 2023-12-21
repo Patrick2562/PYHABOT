@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+    pyhabot:
+        container_name: pyhabot
+        build: .
+        restart: unless-stopped
+        volumes:
+            - .:/app
