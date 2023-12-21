@@ -24,22 +24,26 @@ Ha szeretnéd átvizsgáltatni vele az eddigi hirdetéseket (amelyek a figyelő 
 2. Parancssor megnyitása és navigálás a letöltött repositoryba: `cd PYHABOT`
 3. Szükséges modulok telepítése: `pip install -r requirements.txt`
 4. **.env** fájl létrehozása _(**.env.example** másolata)_: `copy .env.example .env`
-5. **.env** config fájl megnyitása és kitöltése, bot token megadása az egyenlőség után lévő `False`-t lecserélve
-6. Indítás a kiválaszott integrációval: `python run.py discord`
+5. **.env** config fájl megnyitása és kitöltése
+6. Indítás `python run.py` paranccsal
 7. Bot meghívása a szerverre/szobába, és jogot adni neki az üzenetek olvasásához/küldéséhez. (Discord esetében az indításkor megjelenő linken keresztül)
 8. Hirdetésfigyelő hozzáadása: **Hogyan használd** szekcióban részletezve
 
 # Használat (Docker)
 
+0. Feltételezzük, hogy a Docker telepítve van és minimális ismeretekkel rendelkezel.
 1. **.env** fájl létrehozása _(**.env.example** másolata)_: `copy .env.example .env`
-2. **.env** config fájl megnyitása és kitöltése, integráció megadása (**KÖTELEZŐ**) bot token megadása az egyenlőség után lévő `False`-t lecserélve
-3. Stack elindítása a `docker compose up -f docker-compose.local.yml -d` paranccsal
+2. **.env** config fájl megnyitása és kitöltése
+3. Indítás `docker compose up -d` paranccsal
 4. Bot meghívása a szerverre/szobába, és jogot adni neki az üzenetek olvasásához/küldéséhez. (Discord esetében az indításkor megjelenő linken keresztül)
 5. Hirdetésfigyelő hozzáadása: **Hogyan használd** szekcióban részletezve
 
 # Integrációk
 
-Jelenleg Discord és Telegram integrációval rendelkezik. A boton keresztül különböző parancsokkal szerkeszthetjük a beállításokat.
+| Azonosító | Leírás       |
+| :----     | :-----       |
+| discord   | Discord bot  |
+| telegram  | Telegram bot |
 
 # Parancsok
 
