@@ -51,7 +51,7 @@ class Pyhabot():
                 lastseen = viewer["lastseen"] if "lastseen" in viewer else False
 
                 if "notifyon" in viewer:
-                    data = scraper.scrape(viewer["url"])
+                    data = scraper.scrapeAds(viewer["url"])
 
                     if not data:
                         continue
@@ -76,14 +76,14 @@ class Pyhabot():
         notifyon = viewer["notifyon"]
         
         params   = scraper.getURLParams(viewer["url"])
-        stext    = params["stext"][0] if "stext" in params else "?"
+        stext    = params["stext"][0]    if "stext"    in params else viewer["category_name"]
         minprice = params["minprice"][0] if "minprice" in params else "0"
         maxprice = params["maxprice"][0] if "maxprice" in params else "∞"
 
         str_  = f"**{stext}**\n"
         str_ += f"{minprice} - {maxprice} Ft\n\n"
         str_ += f"[{ad['name']}]({ad['link']})\n"
-        str_ += f"**{ad['price']} Ft** ({ad['city']}) ({ad['date']}) ({ad['seller_name']} {ad['seller_rates']})"
+        str_ += f"**{ad['price']}** ({ad['city']}) ({ad['date']}) ({ad['seller_name']} {ad['seller_rates']})"
 
         if notifyon["on"] == "integration":
             if self.integration.name != notifyon["integration"]:
@@ -99,9 +99,10 @@ class Pyhabot():
     def addViewer(self, url):
         self.viewers["AI"] += 1
         self.viewers["list"][ str(self.viewers["AI"]) ] = {
-            "url":      url,
-            "lastseen": False,
-            "notifyon": False
+            "url":           url,
+            "category_name": scraper.scrapeCategoryName(url),
+            "lastseen":      False,
+            "notifyon":      False
         }
         self.saveViewers()
         return self.viewers["AI"]
@@ -112,7 +113,8 @@ class Pyhabot():
         return True
 
     def setViewerURL(self, id_, url):
-        self.viewers["list"][str(id_)]["url"] = url
+        self.viewers["list"][str(id_)]["url"]           = url
+        self.viewers["list"][str(id_)]["category_name"] = scraper.scrapeCategoryName(url)
         self.saveViewers()
         return True
 

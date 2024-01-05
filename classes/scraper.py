@@ -1,5 +1,6 @@
-import requests
+import traceback
 import re
+import requests
 import urllib
 from bs4 import BeautifulSoup
 
@@ -8,7 +9,22 @@ def getURLParams(url):
     parsed_url = urllib.parse.urlparse(url)
     return urllib.parse.parse_qs(parsed_url.query)
 
-def scrape(url):
+def scrapeCategoryName(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+
+        html          = BeautifulSoup(response.text, "html.parser")
+        category_name = html.find("div", id="top").find("ol", class_="breadcrumb").find_all("li", class_="breadcrumb-item")[-1].text
+        
+        return category_name or "n/a"
+
+    except Exception as err:
+        traceback.print_exc()
+
+    return "n/a"
+
+def scrapeAds(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -16,8 +32,7 @@ def scrape(url):
         parsed_url = urllib.parse.urlparse(url)
         base_url   = parsed_url.scheme +'://'+ parsed_url.netloc
 
-        html       = BeautifulSoup(response.text, "html.parser")
-        
+        html     = BeautifulSoup(response.text, "html.parser")
         uad_list = html.find("div", class_="uad-list")
 
         if uad_list.ul and uad_list.ul.li:

@@ -1,6 +1,8 @@
 import re
 import requests
 import marko
+import json
+import urllib
 import telegrampy
 from telegrampy.ext import commands
 from classes.integration import Integration
@@ -52,7 +54,15 @@ class TelegramIntegration(Integration):
     async def sendMessageToChannelByID(self, id_, text):
         for chunk in super().splitToChunks(text):
             try:
-                requests.get(f"https://api.telegram.org/bot{self.client.token}/sendMessage?chat_id={id_}&text={chunk}&parse_mode=Markdown")
+                params = {
+                    "chat_id": id_,
+                    "text": chunk,
+                    "parse_mode": "Markdown",
+                    "link_preview_options": json.dumps({
+                        "is_disabled": True
+                    })
+                }
+                requests.get(f"https://api.telegram.org/bot{self.client.token}/sendMessage?{urllib.parse.urlencode(params)}")
 
             except Exception as err:
                 print(err)

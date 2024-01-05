@@ -104,7 +104,7 @@ async def handle(kwargs):
                 viewer = pyhabot.bot.viewers["list"][id_]
                 params = scraper.getURLParams(viewer["url"])
 
-                str_ += ('\n' if str_ != '' else '') + f"`ID: {id_}` - " + params.get("stext", ["Nem volt megadva keresés"])[0]
+                str_ += ('\n' if str_ != '' else '') + f"`ID: {id_}` - " + params.get("stext", [ viewer["category_name"] ])[0]
 
             await integration.sendMessage(ctx, str_ if str_ != "" else "Nincs még felvett hirdetésfigyelő!") 
 
@@ -116,15 +116,17 @@ async def handle(kwargs):
             viewer = pyhabot.bot.viewers["list"][id_]
             params = scraper.getURLParams(viewer["url"])
 
-            stext    = params["stext"][0] if "stext" in params else "?"
+            stext    = params["stext"][0]    if "stext"    in params else "-"
             minprice = params["minprice"][0] if "minprice" in params else "0"
             maxprice = params["maxprice"][0] if "maxprice" in params else "∞"
 
             str_  = f"- ID: {id_}\n"
+            str_ += f"- Category: {viewer['category_name']}\n"
             str_ += f"- Search for: {stext}\n"
-            str_ += f"- Price limit: {minprice} - {maxprice} Forint\n"
+            str_ += f"- Price limit: {minprice} - {maxprice} Ft\n"
             str_ += f"- Notify on: {viewer['notifyon']['integration'] if 'integration' in viewer['notifyon'] else 'webhook'}\n"
             str_ += f"- URL: {viewer['url']}"
+
             await integration.sendMessage(ctx, f"```\n{str_}\n```")
 
         elif cmd == "seturl":
