@@ -51,12 +51,12 @@ class Pyhabot():
                 lastseen = viewer["lastseen"] if "lastseen" in viewer else False
 
                 if "notifyon" in viewer:
-                    data = scraper.scrapeAds(viewer["url"])
+                    ads = scraper.scrapeAds(viewer["url"])
 
-                    if not data:
+                    if not ads:
                         continue
 
-                    for ad in data["ads"]:
+                    for ad in ads:
                         adid = int(ad["id"])
 
                         if lastseen == False or adid > lastseen:
