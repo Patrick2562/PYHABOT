@@ -3,7 +3,7 @@ import re
 import requests
 import urllib
 from bs4 import BeautifulSoup
-
+from datetime import datetime, timedelta
 
 def getURLParams(url):
     parsed_url = urllib.parse.urlparse(url)
@@ -24,6 +24,19 @@ def scrapeCategoryName(url):
 
     return "n/a"
 
+def convertDate(expression):
+    now = datetime.now()
+    if expression.startswith("ma"):
+        time_part = expression.split()[1]
+        ret_date = datetime.strptime(time_part, "%H:%M").replace(year=now.year, month=now.month, day=now.day)
+    elif expression.startswith("tegnap"):
+        time_part = expression.split()[1]
+        ret_date = datetime.strptime(time_part, "%H:%M").replace(year=now.year, month=now.month, day=now.day) - timedelta(days=1)
+    else:
+        ret_date = datetime.strptime(expression, "%Y-%m-%d")
+    return ret_date.strftime("%Y-%m-%d %H:%M")
+
+
 def scrapeAds(url):
     try:
         response = requests.get(url)
@@ -40,28 +53,30 @@ def scrapeAds(url):
             ads    = []
             
             for ad in medias:
-                title = ad.find("div", class_="uad-title")
-                info  = ad.find("div", class_="uad-info")
-                misc  = ad.find("div", class_="uad-misc")
+                title = ad.find("div", class_="uad-col-title")
+                info  = ad.find("div", class_="uad-col-info")
+                price  = ad.find("div", class_="uad-price")
 
                 if title and info:
-                    info_divs = info.findAll("div")
-                    misc_divs = misc.findAll("div")
-
-                    if len(info_divs) >= 3 and len(misc_divs) >= 2:
-                        ads.append({
-                            "id":           ad["data-uadid"],
-                            "name":         title.h1.a.text.strip(),
-                            "link":         title.h1.a["href"],
-                            "price":        info_divs[0].text.strip(),
-                            "city":         info_divs[1].text.strip(),
-                            "date":         info_divs[2].text.strip(),
-                            "seller_name":  misc_divs[0].a.text.strip(),
-                            "seller_url":   base_url + misc_divs[0].a["href"],
-                            "seller_rates": misc_divs[1].span.text.strip(),
-                            "image":        base_url + ad.a.img["src"]
-                        })
-
+                    new_entry = {
+                        "id":           ad["data-uadid"],
+                        "name":         title.h1.a.text.strip(),
+                        "link":         title.h1.a["href"],
+                        "price":        price.span.text.strip(),
+                        "city":         info.find("div", class_="uad-cities").text.strip(),
+                        "date":         convertDate(info.find("div", class_="uad-time").time.text.strip()),
+                        "seller_name":  info.find("span", class_="uad-user-text").a.text.strip(),
+                        "seller_url":   base_url + info.find("span", class_="uad-user-text").a["href"],
+                        "seller_rates": info.find("span", class_="uad-user-text").span.text.strip(),
+                        "image":        ad.a.img["src"]
+                    }
+                    
+                    if all(new_entry.values()):
+                        ads.append(new_entry)
+                    else:
+                        print("Invalid new ad entry:", new_entry)
+                else:
+                    print("Invalid ad entry:", ad)
             return ads
 
     except Exception as err:
